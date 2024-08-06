@@ -15,17 +15,22 @@
         array_add(*libnames, "abseil_dll");
         array_add(*libnames, "libprotobuf");
         array_add(*libnames, "libcrypto-3-x64");
+
+        array_add(*extra_clang_arguments, "-DVALVE_CALLBACK_PACK_LARGE");
     } else #if OS == .LINUX {
         array_add(*libpaths, "bin/linux");
         array_add(*libnames, "libGameNetworkingSockets");
+
+        array_add(*extra_clang_arguments, "-DVALVE_CALLBACK_PACK_SMALL");
     } else #if OS == .MACOS {
         array_add(*libpaths, "bin/osx");
         array_add(*libnames, "GameNetworkingSockets");
+
+        array_add(*extra_clang_arguments, "-DVALVE_CALLBACK_PACK_SMALL");
     }
 
     array_add(*extra_clang_arguments, "-DBUILD_SHARED_LIB=ON", "-DBUILD_STATIC_LIB=OFF");
     array_add(*extra_clang_arguments, "-DSTEAMNETWORKINGSOCKETS_FOREXPORT", "-DSTEAMNETWORKINGSOCKETS_STANDALONELIB", "-DSTEAMNETWORKINGSOCKETS_OPENSOURCE");
-    array_add(*extra_clang_arguments, "-DVALVE_CALLBACK_PACK_LARGE");
 
     array_add(*extra_clang_arguments, "-x", "c++");
     array_add(*include_paths, "GameNetworkingSockets/include");
