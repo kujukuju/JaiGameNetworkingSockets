@@ -15,27 +15,17 @@
         array_add(*libnames, "abseil_dll");
         array_add(*libnames, "libprotobuf");
         array_add(*libnames, "libcrypto-3-x64");
-
-        array_add(*extra_clang_arguments, "-DBUILD_SHARED_LIB=ON", "-DBUILD_STATIC_LIB=OFF");
-        array_add(*extra_clang_arguments, "-DSTEAMNETWORKINGSOCKETS_FOREXPORT", "-DSTEAMNETWORKINGSOCKETS_STANDALONELIB", "-DSTEAMNETWORKINGSOCKETS_OPENSOURCE");
-
-        // array_add(*include_paths, "physx/physx-sys/src/generated/x86_64-pc-windows-msvc/");
-        // array_add(*system_include_paths, "\"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/lib/clang/17/include\"");
     } else #if OS == .LINUX {
         array_add(*libpaths, "bin/linux");
         array_add(*libnames, "libGameNetworkingSockets");
-
-        // array_add(*extra_clang_arguments, "-D__clang__");
-        // array_add(*extra_clang_arguments, "-std=c++14");
-
-        // array_add(*include_paths, "physx/physx-sys/src/generated/unix/");
-        // array_add(*system_include_paths, "/usr/lib/llvm-18/lib/clang/18/include");
-        // array_add(*system_include_paths, "/usr/include/c++/14");
     } else #if OS == .MACOS {
         array_add(*libpaths, "bin/osx");
         array_add(*libnames, "GameNetworkingSockets");
     }
 
+    array_add(*extra_clang_arguments, "-DBUILD_SHARED_LIB=ON", "-DBUILD_STATIC_LIB=OFF");
+    array_add(*extra_clang_arguments, "-DSTEAMNETWORKINGSOCKETS_FOREXPORT", "-DSTEAMNETWORKINGSOCKETS_STANDALONELIB", "-DSTEAMNETWORKINGSOCKETS_OPENSOURCE");
+    array_add(*extra_clang_arguments, "-DVALVE_CALLBACK_PACK_LARGE");
 
     array_add(*extra_clang_arguments, "-x", "c++");
     array_add(*include_paths, "GameNetworkingSockets/include");

@@ -629,8 +629,8 @@ CSteamID :: struct {
         SteamIDComponent_t :: struct {
             m_unAccountID:       uint32; // unique account identifier
             m_unAccountInstance: u32; // dynamic instance ID
-            #place m_unAccountInstance; /*bitfield 20*/ m_EAccountType:      u32; // type of account - can't show as EAccountType, due to signed / unsigned difference
-            #place m_unAccountInstance; /*bitfield 24*/ m_EUniverse:         EUniverse; // universe this account belongs to
+            // #place m_unAccountInstance; /*bitfield 20*/ m_EAccountType:      u32; // type of account - can't show as EAccountType, due to signed / unsigned difference
+            // #place m_unAccountInstance; /*bitfield 24*/ m_EUniverse:         EUniverse; // universe this account belongs to
         }
 
         m_comp:        SteamIDComponent_t;
@@ -846,7 +846,7 @@ SteamNetworkingIPAddr :: struct {
     }
 
     m_port: uint16; // Host byte order
-}
+} #no_padding
 
 /// An abstract way to represent the identity of a network host.  All identities can
 /// be represented as simple string.  Furthermore, this string representation is actually
@@ -1078,7 +1078,7 @@ SteamNetConnectionInfo_t :: struct {
 
     /// Remote address.  Might be all 0's if we don't know it, or if this is N/A.
     /// (E.g. Basically everything except direct UDP connection.)
-    m_addrRemote:              SteamNetworkingIPAddr;
+    m_addrRemote:              SteamNetworkingIPAddr #align 4;
     m__pad1:                   uint16;
 
     /// What data center is the remote host in?  (0 if we don't know.)
@@ -2254,10 +2254,10 @@ libgamenetworkingsockets :: #library "bin/linux/libGameNetworkingSockets";
         assert(size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_unAccountInstance)) == 4, "CSteamID.SteamID_t.SteamIDComponent_t.m_unAccountInstance has unexpected size % instead of 4", size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_unAccountInstance)));
         // Bitfields are currently not correctly aligned
         // assert(((cast(*void)(*instance.m_EAccountType)) - cast(*void)(*instance)) == 6, "CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType has unexpected offset % instead of 6", ((cast(*void)(*instance.m_EAccountType)) - cast(*void)(*instance)));
-        assert(size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType)) == 4, "CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType has unexpected size % instead of 4", size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType)));
+        // assert(size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType)) == 4, "CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType has unexpected size % instead of 4", size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EAccountType)));
         // Bitfields are currently not correctly aligned
         // assert(((cast(*void)(*instance.m_EUniverse)) - cast(*void)(*instance)) == 7, "CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse has unexpected offset % instead of 7", ((cast(*void)(*instance.m_EUniverse)) - cast(*void)(*instance)));
-        assert(size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse)) == 4, "CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse has unexpected size % instead of 4", size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse)));
+        // assert(size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse)) == 4, "CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse has unexpected size % instead of 4", size_of(type_of(CSteamID.SteamID_t.SteamIDComponent_t.m_EUniverse)));
         assert(size_of(CSteamID.SteamID_t.SteamIDComponent_t) == 8, "CSteamID.SteamID_t.SteamIDComponent_t has size % instead of 8", size_of(CSteamID.SteamID_t.SteamIDComponent_t));
     }
 
