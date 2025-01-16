@@ -636,10 +636,10 @@ CSteamID :: struct {
         m_comp:        SteamIDComponent_t;
 
         m_unAll64Bits: uint64;
-    }
+    } #no_padding
 
     m_steamid: SteamID_t;
-}
+} #no_padding
 
 EGameSearchErrorCode_t :: enum u32 {
     OK                                :: 1;
@@ -1068,51 +1068,51 @@ ESteamNetConnectionEnd :: enum u32 {
 /// Describe the state of a connection.
 SteamNetConnectionInfo_t :: struct {
     /// Who is on the other end?  Depending on the connection type and phase of the connection, we might not know
-    m_identityRemote:          SteamNetworkingIdentity;
+    m_identityRemote:          SteamNetworkingIdentity #align 1;
 
     /// Arbitrary user data set by the local application code
-    m_nUserData:               int64;
+    m_nUserData:               int64 #align 1;
 
     /// Handle to listen socket this was connected on, or k_HSteamListenSocket_Invalid if we initiated the connection
-    m_hListenSocket:           HSteamListenSocket;
+    m_hListenSocket:           HSteamListenSocket #align 1;
 
     /// Remote address.  Might be all 0's if we don't know it, or if this is N/A.
     /// (E.g. Basically everything except direct UDP connection.)
-    m_addrRemote:              SteamNetworkingIPAddr #align 4;
-    m__pad1:                   uint16;
+    m_addrRemote:              SteamNetworkingIPAddr #align 1;
+    m__pad1:                   uint16 #align 1;
 
     /// What data center is the remote host in?  (0 if we don't know.)
-    m_idPOPRemote:             SteamNetworkingPOPID;
+    m_idPOPRemote:             SteamNetworkingPOPID #align 1;
 
     /// What relay are we using to communicate with the remote host?
     /// (0 if not applicable.)
-    m_idPOPRelay:              SteamNetworkingPOPID;
+    m_idPOPRelay:              SteamNetworkingPOPID #align 1;
 
     /// High level state of the connection
-    m_eState:                  ESteamNetworkingConnectionState;
+    m_eState:                  ESteamNetworkingConnectionState #align 1;
 
     /// Basic cause of the connection termination or problem.
     /// See ESteamNetConnectionEnd for the values used
-    m_eEndReason:              s32;
+    m_eEndReason:              s32 #align 1;
 
     /// Human-readable, but non-localized explanation for connection
     /// termination or problem.  This is intended for debugging /
     /// diagnostic purposes only, not to display to users.  It might
     /// have some details specific to the issue.
-    m_szEndDebug:              [128] u8;
+    m_szEndDebug:              [128] u8 #align 1;
 
     /// Debug description.  This includes the internal connection ID,
     /// connection type (and peer information), and any name
     /// given to the connection by the app.  This string is used in various
     /// internal logging messages.
-    m_szConnectionDescription: [128] u8;
+    m_szConnectionDescription: [128] u8 #align 1;
 
     /// Misc flags.  Bitmask of k_nSteamNetworkConnectionInfoFlags_Xxxx
-    m_nFlags:                  s32;
+    m_nFlags:                  s32 #align 1;
 
     /// Internal stuff, room to change API easily
-    reserved:                  [63] uint32;
-}
+    reserved:                  [63] uint32 #align 1;
+} #no_padding
 
 /// Quick connection state, pared down to something you could call
 /// more frequently without it being too big of a perf hit.
@@ -1188,7 +1188,7 @@ SteamNetConnectionRealTimeStatus_t :: struct {
 
     // Internal stuff, room to change API easily
     reserved:                    [16] uint32;
-}
+} #no_padding
 
 /// Quick status of a particular lane
 SteamNetConnectionRealTimeLaneStatus_t :: struct {
@@ -1206,7 +1206,7 @@ SteamNetConnectionRealTimeLaneStatus_t :: struct {
 
     // Internal stuff, room to change API easily
     reserved:                [10] uint32;
-}
+} #no_padding
 
 /// A message that has been received.
 SteamNetworkingMessage_t :: struct {
@@ -1304,7 +1304,7 @@ SteamNetworkingMessage_t :: struct {
 /// ISteamNetworkingUtils().
 SteamNetworkPingLocation_t :: struct {
     m_data: [512] uint8;
-}
+} #no_padding
 
 /// Configuration values can be applied to different types of objects.
 ESteamNetworkingConfigScope :: enum u32 {
