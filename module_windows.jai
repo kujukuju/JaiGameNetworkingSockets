@@ -1881,7 +1881,7 @@
         SteamNetworkingIdentity_ToString: *void;
         SteamNetworkingIdentity_ParseString: *void;
     } #no_padding
-    
+
     /// A struct used to describe our readiness to use the relay network.
     /// To do this we first need to fetch the network configuration,
     /// which describes what POPs are available.
@@ -1917,7 +1917,7 @@
         /// purposes only.
         m_debugMsg:                   [256] u8;
     } #no_padding
-    
+
     /// Interface used to send signaling messages for a particular connection.
     ///
     /// - For connections initiated locally, you will construct it and pass
@@ -1944,7 +1944,7 @@
 
         SendRejectionSignal: *void;
     } #no_padding
-    
+
     uint64_steamid :: uint64;
 
     //-----------------------------------------------------------------------------

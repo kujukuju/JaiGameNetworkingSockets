@@ -9,7 +9,7 @@
 
 #run {
     using opts: Generate_Bindings_Options;
-    
+
     #if OS == .WINDOWS {
         array_add(*libpaths, "bin/win");
         array_add(*libnames, "GameNetworkingSockets");
@@ -52,20 +52,20 @@
     generate_compile_time_struct_checks = true;
     generate_c_style_api_for_vtable = false;
     generate_vtable_helpers = false;
-    
+
     opts.visitor = (decl: *Declaration, parent_decl: *Declaration) -> Declaration_Visit_Result {
         decl_filename: string;
         if decl && decl.location.file {
             decl_filename_clang := clang_getFileName(decl.location.file);
             defer clang_disposeString(decl_filename_clang);
-            decl_filename = to_lower_copy_new(to_string(clang_getCString(decl_filename_clang)),, temp);
+            decl_filename = to_lower_copy(to_string(clang_getCString(decl_filename_clang)),, temp);
         }
 
         parent_decl_filename: string;
         if parent_decl && parent_decl.location.file {
             parent_decl_filename_clang := clang_getFileName(parent_decl.location.file);
             defer clang_disposeString(parent_decl_filename_clang);
-            parent_decl_filename = to_lower_copy_new(to_string(clang_getCString(parent_decl_filename_clang)),, temp);
+            parent_decl_filename = to_lower_copy(to_string(clang_getCString(parent_decl_filename_clang)),, temp);
         }
 
         valid_binding := ends_with(decl_filename, "steamnetworkingsockets_flat.h");
@@ -131,7 +131,7 @@ readd_declarations_recusive :: (decl: *Declaration) {
     }
     table_set(*visited_decl_values, decl, true);
 
-    flags, found := table_find(*old_decl_values, decl);
+    found, flags := table_find_new(*old_decl_values, decl);
     if found {
         decl.decl_flags = flags;
     }
@@ -139,7 +139,7 @@ readd_declarations_recusive :: (decl: *Declaration) {
     if decl.type {
         readd_ctype_recusive(decl.type);
     }
-    
+
     if #complete decl.kind == {
         case .NONE;
         case .DECLARATION;
@@ -169,6 +169,8 @@ readd_declarations_recusive :: (decl: *Declaration) {
             for declaration: namespace_decl.declarations {
                 readd_declarations_recusive(declaration);
             }
+
+        case .BITFIELD;
 
         case .MACRO_DEFINITION;
         case .LITERAL;
